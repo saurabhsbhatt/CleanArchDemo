@@ -1,3 +1,4 @@
+using CleanArch.Infra.Data.Context;
 using CleanArch.Mvc.Data;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,10 @@ namespace CleanArch.Mvc
             var connectionString = builder.Configuration.GetConnectionString("UniversityIdentityDBConnection") ?? throw new InvalidOperationException("Connection string 'UniversityIdentityDBConnection' not found.");
             builder.Services.AddDbContext<ApplicationDbContext>(options =>
                 options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<UniversityDBContext>(options => 
+            {
+                options.UseSqlServer(builder.Configuration.GetConnectionString("UniversityDBConnection"));
+            });
             builder.Services.AddDatabaseDeveloperPageExceptionFilter();
 
             builder.Services.AddDefaultIdentity<IdentityUser>(options => options.SignIn.RequireConfirmedAccount = false)
